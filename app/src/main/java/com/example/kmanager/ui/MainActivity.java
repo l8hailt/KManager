@@ -1,4 +1,4 @@
-package com.example.kmanager;
+package com.example.kmanager.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
