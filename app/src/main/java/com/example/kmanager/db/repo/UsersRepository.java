@@ -1,9 +1,10 @@
-package com.example.kmanager.db;
+package com.example.kmanager.db.repo;
 
 import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 
+import com.example.kmanager.db.AppDatabase;
 import com.example.kmanager.db.dao.UserDAO;
 import com.example.kmanager.db.entity.UserEntity;
 

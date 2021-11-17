@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">KManager</string>
+    <string name="unknown_error">Lỗi không xác định</string>
 </resources>

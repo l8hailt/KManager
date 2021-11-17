@@ -3,21 +3,24 @@ package com.example.kmanager.ui;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 
 import com.example.kmanager.databinding.ActivityLoginBinding;
-import com.example.kmanager.db.UsersRepository;
+import com.example.kmanager.db.repo.UsersRepository;
 import com.example.kmanager.db.entity.UserEntity;
-
-import java.util.concurrent.ExecutionException;
 
 public class LoginActivity extends AppCompatActivity {
 
     private ActivityLoginBinding binding;
 
     private UsersRepository usersRepository;
+
+    private SharedPreferences prefs;
+    private SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +30,8 @@ public class LoginActivity extends AppCompatActivity {
 
         initActions();
         usersRepository = new UsersRepository(getApplication());
+        prefs = getSharedPreferences("k_prefs", MODE_PRIVATE);
+        editor = prefs.edit();
 
     }
 
@@ -50,6 +55,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         if ("admin".equals(username) && "1".equals(password)) {
+            editor.putString("username", username).apply();
             Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(mainIntent);
             return;
@@ -61,6 +67,7 @@ public class LoginActivity extends AppCompatActivity {
                 runOnUiThread(() -> showErrorMsg("Tài khoản không tồn tại hoặc mật khẩu không đúng"));
             } else {
                 runOnUiThread(() -> {
+                    editor.putString("username", username).apply();
                     Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(mainIntent);
                 });

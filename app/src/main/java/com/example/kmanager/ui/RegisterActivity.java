@@ -6,8 +6,9 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.kmanager.R;
 import com.example.kmanager.databinding.ActivityRegisterBinding;
-import com.example.kmanager.db.UsersRepository;
+import com.example.kmanager.db.repo.UsersRepository;
 import com.example.kmanager.db.entity.UserEntity;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -54,7 +55,7 @@ public class RegisterActivity extends AppCompatActivity {
                     Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
                     startActivity(mainIntent);
                 } else {
-                    showErrorMsg("Lỗi không xác định");
+                    showErrorMsg(getString(R.string.unknown_error));
                 }
             }
         }).start();

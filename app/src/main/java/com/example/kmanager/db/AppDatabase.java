@@ -7,18 +7,21 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
+import com.example.kmanager.db.dao.RoomDAO;
 import com.example.kmanager.db.dao.UserDAO;
+import com.example.kmanager.db.entity.RoomEntity;
 import com.example.kmanager.db.entity.UserEntity;
 
-@Database(entities = {UserEntity.class}, version = 1)
+@Database(entities = {UserEntity.class, RoomEntity.class}, version = 1)
 @TypeConverters({DateConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract UserDAO userDAO();
+    public abstract RoomDAO roomDAO();
 
     private static AppDatabase INSTANCE;
 
-    static AppDatabase getDatabase(final Context context) {
+    public static AppDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (AppDatabase.class) {
                 if (INSTANCE == null) {
