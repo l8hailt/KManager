@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MainActivity">
+    tools:context=".ui.RoomActivity">
 
     <RelativeLayout
         android:id="@+id/rl_toolbar"
@@ -15,46 +15,37 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="Danh sách phòng"
             android:textColor="@color/black_logo_icon"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            tools:text="Phòng 1" />
 
         <ImageView
-            android:id="@+id/img_logout"
+            android:id="@+id/img_back"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:foreground="?attr/selectableItemBackground"
-            android:padding="8dp"
-            android:src="@drawable/ic_logout"
+            android:layout_marginStart="8dp"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:padding="10dp"
+            android:src="@drawable/ic_back"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
     </RelativeLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_room"
+    <Button
+        style="@style/Button_KManager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:layout_constraintTop_toBottomOf="@+id/rl_toolbar"
-        app:spanCount="2"
-        tools:itemCount="5"
-        tools:listitem="@layout/item_room" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_add_room"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_marginHorizontal="16dp"
         android:layout_marginBottom="16dp"
-        android:src="@drawable/ic_plus"
-        android:backgroundTint="@color/black_logo_icon"
+        android:text="Đặt phòng"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

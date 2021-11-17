@@ -20,4 +20,10 @@
         <item name="android:textCursorDrawable">@drawable/cursor_edit_text</item>
     </style>
 
+    <style name="Button_KManager">
+        <item name="android:background">@drawable/bg_button</item>
+        <item name="android:foreground">?selectableItemBackground</item>
+        <item name="android:textColor">@color/orange_logo_icon</item>
+    </style>
+
 </resources>

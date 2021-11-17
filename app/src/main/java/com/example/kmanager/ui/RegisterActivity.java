@@ -27,7 +27,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void initActions() {
-        binding.imgClose.setOnClickListener(view -> finish());
+        binding.imgClose.setOnClickListener(view -> onBackPressed());
 
         binding.btnRegister.setOnClickListener(view -> doRegister());
     }
