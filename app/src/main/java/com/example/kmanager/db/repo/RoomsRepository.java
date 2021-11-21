@@ -30,4 +30,8 @@ public class RoomsRepository {
         return roomDAO.insert(room);
     }
 
+    public int updateRoom(RoomEntity room) {
+        return roomDAO.update(room);
+    }
+
 }

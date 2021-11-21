@@ -37,6 +37,13 @@
 
     </RelativeLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/v_shadow"
+        app:layout_constraintTop_toBottomOf="@id/rl_toolbar" />
+
     <Button
         style="@style/Button_KManager"
         android:layout_width="match_parent"

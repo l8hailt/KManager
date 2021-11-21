@@ -23,7 +23,7 @@ public interface RoomDAO {
     long insert(RoomEntity room);
 
     @Update
-    void update(RoomEntity room);
+    int update(RoomEntity room);
 
     @Delete
     void delete(RoomEntity room);

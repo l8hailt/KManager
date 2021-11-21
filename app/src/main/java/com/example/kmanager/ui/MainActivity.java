@@ -48,11 +48,7 @@ public class MainActivity extends AppCompatActivity {
         initActions();
         initRoomsView();
 
-        new Thread(() -> {
-            List<RoomEntity> rooms = roomsRepository.getAllRooms();
-            this.rooms.addAll(rooms);
-            runOnUiThread(() -> roomAdapter.notifyDataSetChanged());
-        }).start();
+        initRooms();
     }
 
     private void initActions() {
@@ -113,4 +109,20 @@ public class MainActivity extends AppCompatActivity {
         binding.rvRoom.setAdapter(roomAdapter);
     }
 
+    private void initRooms() {
+        new Thread(() -> {
+            List<RoomEntity> rooms = roomsRepository.getAllRooms();
+            if (rooms != null && !rooms.isEmpty()) {
+                this.rooms.clear();
+                this.rooms.addAll(rooms);
+                runOnUiThread(() -> roomAdapter.notifyDataSetChanged());
+            }
+        }).start();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initRooms();
+    }
 }
