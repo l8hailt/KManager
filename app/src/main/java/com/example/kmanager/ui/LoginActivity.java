@@ -33,6 +33,11 @@ public class LoginActivity extends AppCompatActivity {
         prefs = getSharedPreferences("k_prefs", MODE_PRIVATE);
         editor = prefs.edit();
 
+        if (!"".equals(prefs.getString("username", ""))) {
+            Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(mainIntent);
+            finish();
+        }
     }
 
     private void initActions() {
