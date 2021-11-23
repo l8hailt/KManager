@@ -45,20 +45,25 @@
         app:layout_constraintTop_toBottomOf="@id/rl_toolbar" />
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+        android:id="@+id/tv_from_date"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
-        android:text="Chọn tháng"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingVertical="4dp"
+        android:text="Từ ngày"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/v_toolbar" />
 
-    <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/bar_chart"
+    <TextView
+        android:id="@+id/tv_to_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="4dp"
+        android:paddingVertical="4dp"
+        android:text="Đên ngày"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_from_date" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

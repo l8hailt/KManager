@@ -10,11 +10,8 @@ public class OrderEntity {
     @PrimaryKey(autoGenerate = true)
     private long id;
 
-    @ColumnInfo(name = "name")
-    private String name;
-
-    @ColumnInfo(name = "price")
-    private Double price;
+    @ColumnInfo(name = "total")
+    private Double total;
 
     @ColumnInfo(name = "roomId")
     private int roomId;
@@ -27,9 +24,8 @@ public class OrderEntity {
     @ColumnInfo(name = "checkout")
     private int checkout;
 
-    public OrderEntity(String name, Double price, int roomId) {
-        this.name = name;
-        this.price = price;
+    public OrderEntity(Double total, int roomId) {
+        this.total = total;
         this.roomId = roomId;
         this.orderTime = System.currentTimeMillis();
         this.checkout = 0;
@@ -43,20 +39,12 @@ public class OrderEntity {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public Double getTotal() {
+        return total;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
+    public void setTotal(Double total) {
+        this.total = total;
     }
 
     public int getRoomId() {

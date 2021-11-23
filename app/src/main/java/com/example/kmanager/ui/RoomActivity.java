@@ -57,7 +57,7 @@ public class RoomActivity extends AppCompatActivity {
                     List<OrderEntity> ordersOfRoom = ordersRepository.getOrderOfRoom(roomEntity.getId());
                     if (ordersOfRoom != null && !ordersOfRoom.isEmpty()) {
                         for (OrderEntity orderEntity : ordersOfRoom) {
-                            total += orderEntity.getPrice();
+//                            total += orderEntity.getPrice();
                         }
                         orders.addAll(ordersOfRoom);
                         runOnUiThread(() -> {
@@ -96,7 +96,7 @@ public class RoomActivity extends AppCompatActivity {
                     int result = ordersRepository.deleteOrder(orderEntity);
                     runOnUiThread(() -> {
                         if (result > -1) {
-                            total -= orderEntity.getPrice();
+//                            total -= orderEntity.getPrice();
                             binding.tvTotal.setText(String.valueOf(total));
                             orders.remove(orderEntity);
                             orderAdapter.notifyItemRemoved(position);
@@ -126,27 +126,27 @@ public class RoomActivity extends AppCompatActivity {
                         return;
                     }
 
-                    new Thread(() -> {
-                        try {
-                            OrderEntity order = new OrderEntity(orderName,
-                                    Double.parseDouble(price),
-                                    roomEntity.getId());
-                            long id = ordersRepository.insertOrder(order);
-                            runOnUiThread(() -> {
-                                if (id > -1) {
-                                    total += order.getPrice();
-                                    binding.tvTotal.setText(String.valueOf(total));
-                                    order.setId(id);
-                                    orders.add(order);
-                                    orderAdapter.notifyItemInserted(orders.size() - 1);
-                                } else {
-                                    Toast.makeText(this, R.string.unknown_error, Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        } catch (NumberFormatException nfe) {
-                            Toast.makeText(this, "Số tiền không hợp lệ", Toast.LENGTH_SHORT).show();
-                        }
-                    }).start();
+//                    new Thread(() -> {
+//                        try {
+//                            OrderEntity order = new OrderEntity(orderName,
+//                                    Double.parseDouble(price),
+//                                    roomEntity.getId());
+//                            long id = ordersRepository.insertOrder(order);
+//                            runOnUiThread(() -> {
+//                                if (id > -1) {
+////                                    total += order.getPrice();
+//                                    binding.tvTotal.setText(String.valueOf(total));
+//                                    order.setId(id);
+//                                    orders.add(order);
+//                                    orderAdapter.notifyItemInserted(orders.size() - 1);
+//                                } else {
+//                                    Toast.makeText(this, R.string.unknown_error, Toast.LENGTH_SHORT).show();
+//                                }
+//                            });
+//                        } catch (NumberFormatException nfe) {
+//                            Toast.makeText(this, "Số tiền không hợp lệ", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }).start();
                 })
                 .setNegativeButton("Hủy", null)
                 .show();

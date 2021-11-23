@@ -52,8 +52,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
         }
 
         void bind(OrderEntity orderEntity, OnOrderClickListener listener) {
-            binding.tvOrderName.setText(orderEntity.getName());
-            binding.tvPrice.setText(String.valueOf(orderEntity.getPrice()));
+//            binding.tvOrderName.setText(orderEntity.getName());
+//            binding.tvPrice.setText(String.valueOf(orderEntity.getPrice()));
 
             binding.getRoot().setOnClickListener(view -> {
                 if (listener != null) {
