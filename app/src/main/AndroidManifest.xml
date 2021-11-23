@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KManager">
         <activity
+            android:name=".ui.StatisticsActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.RoomActivity"
             android:exported="false" />
         <activity

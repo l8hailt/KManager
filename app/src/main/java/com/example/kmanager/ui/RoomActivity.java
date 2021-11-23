@@ -95,7 +95,7 @@ public class RoomActivity extends AppCompatActivity {
                 new Thread(() -> {
                     int result = ordersRepository.deleteOrder(orderEntity);
                     runOnUiThread(() -> {
-                        if (result > 0) {
+                        if (result > -1) {
                             total -= orderEntity.getPrice();
                             binding.tvTotal.setText(String.valueOf(total));
                             orders.remove(orderEntity);
@@ -133,7 +133,7 @@ public class RoomActivity extends AppCompatActivity {
                                     roomEntity.getId());
                             long id = ordersRepository.insertOrder(order);
                             runOnUiThread(() -> {
-                                if (id > 0) {
+                                if (id > -1) {
                                     total += order.getPrice();
                                     binding.tvTotal.setText(String.valueOf(total));
                                     order.setId(id);
@@ -162,7 +162,7 @@ public class RoomActivity extends AppCompatActivity {
                                 roomEntity.setUse(!roomEntity.isUse());
                                 int result = roomsRepository.updateRoom(roomEntity);
                                 runOnUiThread(() -> {
-                                    if (result > 0) {
+                                    if (result > -1) {
                                         finish();
                                     } else {
                                         Toast.makeText(RoomActivity.this, R.string.unknown_error, Toast.LENGTH_SHORT).show();
@@ -176,8 +176,13 @@ public class RoomActivity extends AppCompatActivity {
                 new Thread(() -> {
                     roomEntity.setUse(!roomEntity.isUse());
                     int result = roomsRepository.updateRoom(roomEntity);
+                    List<Long> ids = new ArrayList<>();
+                    for (OrderEntity order : orders) {
+                        ids.add(order.getId());
+                    }
+                    ordersRepository.checkoutOrders(ids);
                     runOnUiThread(() -> {
-                        if (result > 0) {
+                        if (result > -1) {
                             binding.btnSubmit.setText(roomEntity.isUse() ? "Trả phòng" : "Đặt phòng");
                             binding.fabAddRoom.setVisibility(View.VISIBLE);
                         } else {

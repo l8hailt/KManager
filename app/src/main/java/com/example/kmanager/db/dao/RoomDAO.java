@@ -13,7 +13,7 @@ import java.util.List;
 @Dao
 public interface RoomDAO {
 
-    @Query("SELECT * FROM rooms ORDER BY id DESC")
+    @Query("SELECT * FROM rooms ORDER BY id ASC")
     List<RoomEntity> getAllRooms();
 
     @Query("SELECT * FROM rooms WHERE id=:id")

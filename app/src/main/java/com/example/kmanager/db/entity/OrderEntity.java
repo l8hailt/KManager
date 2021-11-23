@@ -19,10 +19,20 @@ public class OrderEntity {
     @ColumnInfo(name = "roomId")
     private int roomId;
 
+    @ColumnInfo(name = "orderTime")
+    private long orderTime;
+
+    // 0 chưa checkout
+    // 1 đã checkout
+    @ColumnInfo(name = "checkout")
+    private int checkout;
+
     public OrderEntity(String name, Double price, int roomId) {
         this.name = name;
         this.price = price;
         this.roomId = roomId;
+        this.orderTime = System.currentTimeMillis();
+        this.checkout = 0;
     }
 
     public long getId() {
@@ -55,5 +65,21 @@ public class OrderEntity {
 
     public void setRoomId(int roomId) {
         this.roomId = roomId;
+    }
+
+    public long getOrderTime() {
+        return orderTime;
+    }
+
+    public void setOrderTime(long orderTime) {
+        this.orderTime = orderTime;
+    }
+
+    public int getCheckout() {
+        return checkout;
+    }
+
+    public void setCheckout(int checkout) {
+        this.checkout = checkout;
     }
 }

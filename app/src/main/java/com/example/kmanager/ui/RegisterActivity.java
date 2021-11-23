@@ -51,7 +51,7 @@ public class RegisterActivity extends AppCompatActivity {
             } else {
                 UserEntity user = new UserEntity(username, password);
                 long id = usersRepository.insertUser(user);
-                if (id > 0) {
+                if (id > -1) {
                     Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
                     startActivity(mainIntent);
                 } else {

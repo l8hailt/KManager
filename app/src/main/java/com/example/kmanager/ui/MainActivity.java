@@ -7,10 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 
 import com.example.kmanager.R;
 import com.example.kmanager.databinding.ActivityMainBinding;
@@ -42,8 +44,12 @@ public class MainActivity extends AppCompatActivity {
         roomsRepository = new RoomsRepository(getApplication());
         prefs = getSharedPreferences("k_prefs", MODE_PRIVATE);
 
-        boolean isAdmin = "admin".equals(prefs.getString("username", ""));
+        String username = prefs.getString("username", "");
+        boolean isAdmin = "admin".equals(username);
         binding.fabAddRoom.setVisibility(isAdmin ? View.VISIBLE : View.GONE);
+        View navHeader = binding.navMain.getHeaderView(0);
+        TextView tvUsername = navHeader.findViewById(R.id.tv_username);
+        tvUsername.setText(username);
 
         initActions();
         initRoomsView();
@@ -52,15 +58,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initActions() {
-        binding.imgLogout.setOnClickListener(v -> {
-            new AlertDialog.Builder(MainActivity.this)
-                    .setMessage("Bạn có chắc chắn muốn đăng xuất không?")
-                    .setPositiveButton("Có", (dialogInterface, i) -> {
-                        Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
-                        startActivity(loginIntent);
-                    })
-                    .setNegativeButton("Không", null)
-                    .show();
+        binding.imgMenu.setOnClickListener(view -> {
+            binding.drawerMain.openDrawer(GravityCompat.START);
+        });
+
+        binding.navMain.setNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+            switch (id) {
+                case R.id.menu_statistics:
+                    binding.drawerMain.closeDrawer(GravityCompat.START);
+                    Intent statisticsIntent = new Intent(MainActivity.this, StatisticsActivity.class);
+                    startActivity(statisticsIntent);
+                    break;
+
+                case R.id.menu_logout:
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setMessage("Bạn có chắc chắn muốn đăng xuất không?")
+                            .setPositiveButton("Có", (dialogInterface, i) -> {
+                                prefs.edit().putString("username", "").apply();
+                                Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+                                startActivity(loginIntent);
+                            })
+                            .setNegativeButton("Không", null)
+                            .show();
+                    break;
+            }
+            return true;
         });
 
         binding.fabAddRoom.setOnClickListener(view -> {
@@ -81,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                             RoomEntity room = new RoomEntity(roomName);
                             long id = roomsRepository.insertRoom(room);
                             runOnUiThread(() -> {
-                                if (id > 0) {
+                                if (id > -1) {
                                     rooms.add(room);
                                     roomAdapter.notifyItemInserted(rooms.size() - 1);
                                 } else {

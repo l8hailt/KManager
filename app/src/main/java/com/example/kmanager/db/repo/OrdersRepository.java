@@ -6,6 +6,7 @@ import com.example.kmanager.db.AppDatabase;
 import com.example.kmanager.db.dao.OrderDAO;
 import com.example.kmanager.db.entity.OrderEntity;
 
+import java.util.Date;
 import java.util.List;
 
 public class OrdersRepository {
@@ -21,6 +22,10 @@ public class OrdersRepository {
         return orderDAO.getOrdersByRoomId(roomId);
     }
 
+    public List<OrderEntity> getOrderInMonth(Date dateOfMonth) {
+        return orderDAO.getOrdersByMonth(dateOfMonth);
+    }
+
     public long insertOrder(OrderEntity order) {
         return orderDAO.insert(order);
     }
@@ -31,6 +36,10 @@ public class OrdersRepository {
 
     public int deleteOrder(OrderEntity order) {
         return orderDAO.delete(order);
+    }
+
+    public void checkoutOrders(List<Long> ids) {
+        orderDAO.updateCheckoutOrders(ids);
     }
 
 }
