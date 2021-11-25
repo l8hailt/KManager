@@ -4,31 +4,32 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+
 @Entity(tableName = "orders")
-public class OrderEntity {
+public class OrderEntity implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
     private long id;
 
     @ColumnInfo(name = "total")
-    private Double total;
+    private long total;
 
     @ColumnInfo(name = "roomId")
     private int roomId;
 
-    @ColumnInfo(name = "orderTime")
-    private long orderTime;
+    @ColumnInfo(name = "timeStart")
+    private long timeStart;
 
-    // 0 chưa checkout
-    // 1 đã checkout
+    @ColumnInfo(name = "timeEnd")
+    private long timeEnd;
+
     @ColumnInfo(name = "checkout")
-    private int checkout;
+    private boolean checkout;
 
-    public OrderEntity(Double total, int roomId) {
-        this.total = total;
+    public OrderEntity(int roomId) {
         this.roomId = roomId;
-        this.orderTime = System.currentTimeMillis();
-        this.checkout = 0;
+        this.timeStart = System.currentTimeMillis();
     }
 
     public long getId() {
@@ -39,11 +40,11 @@ public class OrderEntity {
         this.id = id;
     }
 
-    public Double getTotal() {
+    public long getTotal() {
         return total;
     }
 
-    public void setTotal(Double total) {
+    public void setTotal(long total) {
         this.total = total;
     }
 
@@ -55,19 +56,27 @@ public class OrderEntity {
         this.roomId = roomId;
     }
 
-    public long getOrderTime() {
-        return orderTime;
+    public long getTimeStart() {
+        return timeStart;
     }
 
-    public void setOrderTime(long orderTime) {
-        this.orderTime = orderTime;
+    public void setTimeStart(long timeStart) {
+        this.timeStart = timeStart;
     }
 
-    public int getCheckout() {
+    public long getTimeEnd() {
+        return timeEnd;
+    }
+
+    public void setTimeEnd(long timeEnd) {
+        this.timeEnd = timeEnd;
+    }
+
+    public boolean isCheckout() {
         return checkout;
     }
 
-    public void setCheckout(int checkout) {
+    public void setCheckout(boolean checkout) {
         this.checkout = checkout;
     }
 }

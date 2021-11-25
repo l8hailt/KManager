@@ -21,7 +21,7 @@
             android:layout_centerInParent="true"
             android:textColor="@color/black_logo_icon"
             android:textSize="20sp"
-            tools:text="Phòng 1" />
+            tools:text="HD1" />
 
         <ImageView
             android:id="@+id/img_back"
@@ -82,30 +82,6 @@
         android:textColor="@color/red"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/btn_submit"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <Button
-        android:id="@+id/btn_submit"
-        style="@style/Button_KManager"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="16dp"
-        android:text="Đặt phòng"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/fab_add_room"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_add_room"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="12dp"
-        android:backgroundTint="@color/black_logo_icon"
-        android:src="@drawable/ic_plus"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

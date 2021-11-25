@@ -40,6 +40,19 @@
                 android:textColor="@color/black_logo_icon"
                 android:textSize="20sp" />
 
+            <ImageView
+                android:id="@+id/img_logout"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="8dp"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:padding="8dp"
+                android:src="@drawable/ic_logout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
         </RelativeLayout>
 
         <View
@@ -57,7 +70,7 @@
             android:paddingVertical="8dp"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintTop_toBottomOf="@+id/rl_toolbar"
-            app:spanCount="2"
+            app:spanCount="3"
             tools:itemCount="5"
             tools:listitem="@layout/item_room" />
 

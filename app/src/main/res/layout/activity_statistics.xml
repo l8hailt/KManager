@@ -46,24 +46,95 @@
 
     <TextView
         android:id="@+id/tv_from_date"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
+        android:drawablePadding="4dp"
         android:paddingVertical="4dp"
-        android:text="Từ ngày"
+        android:textColor="@color/black_logo_icon"
+        android:textSize="16sp"
+        app:drawableStartCompat="@drawable/ic_calendar"
+        app:layout_constraintEnd_toStartOf="@+id/btn_search"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/v_toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/v_toolbar"
+        tools:text="Từ ngày: 25/11/2021" />
 
     <TextView
         android:id="@+id/tv_to_date"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="4dp"
+        android:drawablePadding="4dp"
         android:paddingVertical="4dp"
-        android:text="Đên ngày"
+        android:textColor="@color/black_logo_icon"
+        android:textSize="16sp"
+        app:drawableStartCompat="@drawable/ic_calendar"
+        app:layout_constraintEnd_toStartOf="@+id/btn_search"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_from_date" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_from_date"
+        tools:text="Đên ngày: 25/11/2021" />
+
+    <Button
+        android:id="@+id/btn_search"
+        style="@style/Button_KManager"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="Thống kê"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_to_date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_from_date" />
+
+
+    <View
+        android:id="@+id/v_filter"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/v_shadow"
+        app:layout_constraintTop_toBottomOf="@id/tv_to_date" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_orders"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/v_divider"
+        app:layout_constraintTop_toBottomOf="@+id/v_filter"
+        tools:listitem="@layout/item_order_statistics" />
+
+    <View
+        android:id="@+id/v_divider"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/v_shadow"
+        app:layout_constraintBottom_toTopOf="@+id/tv_total_revenue" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Doanh thu: "
+        android:textColor="@color/red"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/tv_total_revenue"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_total_revenue" />
+
+    <TextView
+        android:id="@+id/tv_total_revenue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="0 ₫"
+        android:textColor="@color/red"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

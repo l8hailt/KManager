@@ -8,19 +8,27 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
 import com.example.kmanager.db.dao.OrderDAO;
+import com.example.kmanager.db.dao.OrderDetailDAO;
 import com.example.kmanager.db.dao.RoomDAO;
 import com.example.kmanager.db.dao.UserDAO;
+import com.example.kmanager.db.entity.OrderDetailEntity;
 import com.example.kmanager.db.entity.OrderEntity;
 import com.example.kmanager.db.entity.RoomEntity;
 import com.example.kmanager.db.entity.UserEntity;
 
-@Database(entities = {UserEntity.class, RoomEntity.class, OrderEntity.class}, version = 1)
+@Database(entities = {
+        UserEntity.class,
+        RoomEntity.class,
+        OrderEntity.class,
+        OrderDetailEntity.class
+}, version = 1)
 @TypeConverters({DateConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract UserDAO userDAO();
     public abstract RoomDAO roomDAO();
     public abstract OrderDAO orderDAO();
+    public abstract OrderDetailDAO orderDetailDAO();
 
     private static AppDatabase INSTANCE;
 

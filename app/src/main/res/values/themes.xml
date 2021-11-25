@@ -12,6 +12,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/black_logo_icon</item>
         <!-- Customize your theme here. -->
+        <item name="alertDialogTheme">@style/AlertDialog_KManager</item>
     </style>
 
     <style name="EditText_KManager">
@@ -23,6 +24,19 @@
     <style name="Button_KManager">
         <item name="android:background">@drawable/bg_button</item>
         <item name="android:foreground">?selectableItemBackground</item>
+        <item name="android:textColor">@color/orange_logo_icon</item>
+    </style>
+
+    <style name="AlertDialog_KManager" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+    </style>
+
+    <style name="NegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/orange_logo_icon</item>
+    </style>
+
+    <style name="PositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
         <item name="android:textColor">@color/orange_logo_icon</item>
     </style>
 

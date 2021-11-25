@@ -1,6 +1,7 @@
 package com.example.kmanager.ui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
@@ -17,6 +18,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     private UsersRepository usersRepository;
 
+    private SharedPreferences prefs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +28,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         initActions();
         usersRepository = new UsersRepository(getApplication());
+        prefs = getSharedPreferences("k_prefs", MODE_PRIVATE);
     }
 
     private void initActions() {
@@ -52,8 +56,10 @@ public class RegisterActivity extends AppCompatActivity {
                 UserEntity user = new UserEntity(username, password);
                 long id = usersRepository.insertUser(user);
                 if (id > -1) {
+                    prefs.edit().putString("username", username).apply();
                     Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
                     startActivity(mainIntent);
+                    finish();
                 } else {
                     showErrorMsg(getString(R.string.unknown_error));
                 }
@@ -81,6 +87,10 @@ public class RegisterActivity extends AppCompatActivity {
                 showErrorMsg("Mật khẩu không khớp");
                 return false;
             }
+        }
+        if ("admin".equals(username)) {
+            showErrorMsg("Tên đăng nhập không hợp lệ");
+            return false;
         }
 
         return true;

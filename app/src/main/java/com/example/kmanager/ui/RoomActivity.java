@@ -1,6 +1,8 @@
 package com.example.kmanager.ui;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -9,30 +11,41 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 
 import com.example.kmanager.R;
 import com.example.kmanager.databinding.ActivityRoomBinding;
+import com.example.kmanager.db.entity.OrderDetailEntity;
 import com.example.kmanager.db.entity.OrderEntity;
 import com.example.kmanager.db.entity.RoomEntity;
 import com.example.kmanager.db.repo.OrdersRepository;
 import com.example.kmanager.db.repo.RoomsRepository;
 import com.example.kmanager.ui.adapter.OrderAdapter;
+import com.example.kmanager.ui.adapter.OrderDetailAdapter;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class RoomActivity extends AppCompatActivity {
 
     private ActivityRoomBinding binding;
+
+    private SharedPreferences prefs;
+
     private RoomEntity roomEntity;
+    private OrderEntity orderEntity;
 
     private RoomsRepository roomsRepository;
     private OrdersRepository ordersRepository;
 
-    private List<OrderEntity> orders;
-    private OrderAdapter orderAdapter;
+    private List<OrderDetailEntity> orderDetails;
+    private OrderDetailAdapter orderDetailAdapter;
 
-    private Double total = 0.0;
+    private NumberFormat nf;
+
+    private long total = 0L;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +55,10 @@ public class RoomActivity extends AppCompatActivity {
 
         roomsRepository = new RoomsRepository(getApplication());
         ordersRepository = new OrdersRepository(getApplication());
+
+        prefs = getSharedPreferences("k_prefs", MODE_PRIVATE);
+
+        nf = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
 
         initActions();
 
@@ -54,15 +71,19 @@ public class RoomActivity extends AppCompatActivity {
 
                 initOrdersView();
                 new Thread(() -> {
-                    List<OrderEntity> ordersOfRoom = ordersRepository.getOrderOfRoom(roomEntity.getId());
-                    if (ordersOfRoom != null && !ordersOfRoom.isEmpty()) {
-                        for (OrderEntity orderEntity : ordersOfRoom) {
-//                            total += orderEntity.getPrice();
+                    orderEntity = ordersRepository.getOrderByRoomId(roomEntity.getId());
+                    if (orderEntity != null) {
+                        Log.e("TAG", "onCreate: " + orderEntity.getId());
+
+                        List<OrderDetailEntity> orderDetails = ordersRepository.getDetailsByOrderId(orderEntity.getId());
+                        Log.e("TAG", "onCreate: " + orderDetails.size());
+                        for (OrderDetailEntity detailEntity : orderDetails) {
+                            total += detailEntity.getPrice();
                         }
-                        orders.addAll(ordersOfRoom);
+                        this.orderDetails.addAll(orderDetails);
                         runOnUiThread(() -> {
-                            orderAdapter.notifyDataSetChanged();
-                            binding.tvTotal.setText(String.valueOf(total));
+                            orderDetailAdapter.notifyDataSetChanged();
+                            binding.tvTotal.setText(nf.format(total));
                         });
                     }
                 }).start();
@@ -82,24 +103,26 @@ public class RoomActivity extends AppCompatActivity {
     }
 
     private void initOrdersView() {
-        orders = new ArrayList<>();
-        orderAdapter = new OrderAdapter(orders);
-        orderAdapter.setOnOrderClickListener(new OrderAdapter.OnOrderClickListener() {
+        String username = prefs.getString("username", "");
+        boolean isAdmin = "admin".equals(username);
+        orderDetails = new ArrayList<>();
+        orderDetailAdapter = new OrderDetailAdapter(orderDetails, isAdmin, nf);
+        orderDetailAdapter.setOnOrderClickListener(new OrderDetailAdapter.OnOrderDetailClickListener() {
             @Override
-            public void onEdit(OrderEntity orderEntity, int position) {
+            public void onEdit(OrderDetailEntity orderEntity, int position) {
 
             }
 
             @Override
-            public void onRemove(OrderEntity orderEntity, int position) {
+            public void onRemove(OrderDetailEntity detailEntity, int position) {
                 new Thread(() -> {
-                    int result = ordersRepository.deleteOrder(orderEntity);
+                    int result = ordersRepository.deleteOrderDetail(detailEntity);
                     runOnUiThread(() -> {
                         if (result > -1) {
-//                            total -= orderEntity.getPrice();
-                            binding.tvTotal.setText(String.valueOf(total));
-                            orders.remove(orderEntity);
-                            orderAdapter.notifyItemRemoved(position);
+                            total -= detailEntity.getPrice();
+                            binding.tvTotal.setText(nf.format(total));
+                            orderDetails.remove(detailEntity);
+                            orderDetailAdapter.notifyItemRemoved(position);
                         } else {
                             Toast.makeText(RoomActivity.this, R.string.unknown_error, Toast.LENGTH_SHORT).show();
                         }
@@ -107,7 +130,8 @@ public class RoomActivity extends AppCompatActivity {
                 }).start();
             }
         });
-        binding.rvOrders.setAdapter(orderAdapter);
+        binding.rvOrderDetails.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        binding.rvOrderDetails.setAdapter(orderDetailAdapter);
     }
 
     private void showAddOrderDialog() {
@@ -126,27 +150,27 @@ public class RoomActivity extends AppCompatActivity {
                         return;
                     }
 
-//                    new Thread(() -> {
-//                        try {
-//                            OrderEntity order = new OrderEntity(orderName,
-//                                    Double.parseDouble(price),
-//                                    roomEntity.getId());
-//                            long id = ordersRepository.insertOrder(order);
-//                            runOnUiThread(() -> {
-//                                if (id > -1) {
-////                                    total += order.getPrice();
-//                                    binding.tvTotal.setText(String.valueOf(total));
-//                                    order.setId(id);
-//                                    orders.add(order);
-//                                    orderAdapter.notifyItemInserted(orders.size() - 1);
-//                                } else {
-//                                    Toast.makeText(this, R.string.unknown_error, Toast.LENGTH_SHORT).show();
-//                                }
-//                            });
-//                        } catch (NumberFormatException nfe) {
-//                            Toast.makeText(this, "Số tiền không hợp lệ", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }).start();
+                    new Thread(() -> {
+                        try {
+                            OrderDetailEntity detail = new OrderDetailEntity(orderName,
+                                    Long.parseLong(price),
+                                    orderEntity.getId());
+                            long id = ordersRepository.insertOrderDetail(detail);
+                            runOnUiThread(() -> {
+                                if (id > -1) {
+                                    total += detail.getPrice();
+                                    binding.tvTotal.setText(nf.format(total));
+                                    detail.setId(id);
+                                    orderDetails.add(detail);
+                                    orderDetailAdapter.notifyItemInserted(orderDetails.size() - 1);
+                                } else {
+                                    Toast.makeText(this, R.string.unknown_error, Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        } catch (NumberFormatException nfe) {
+                            Toast.makeText(this, "Số tiền không hợp lệ", Toast.LENGTH_SHORT).show();
+                        }
+                    }).start();
                 })
                 .setNegativeButton("Hủy", null)
                 .show();
@@ -161,8 +185,14 @@ public class RoomActivity extends AppCompatActivity {
                             new Thread(() -> {
                                 roomEntity.setUse(!roomEntity.isUse());
                                 int result = roomsRepository.updateRoom(roomEntity);
+
+                                orderEntity.setCheckout(true);
+                                orderEntity.setTimeEnd(System.currentTimeMillis());
+                                orderEntity.setTotal(total);
+                                int checkOutResult = ordersRepository.updateOrder(orderEntity);
+
                                 runOnUiThread(() -> {
-                                    if (result > -1) {
+                                    if (result > -1 && checkOutResult > -1) {
                                         finish();
                                     } else {
                                         Toast.makeText(RoomActivity.this, R.string.unknown_error, Toast.LENGTH_SHORT).show();
@@ -176,13 +206,11 @@ public class RoomActivity extends AppCompatActivity {
                 new Thread(() -> {
                     roomEntity.setUse(!roomEntity.isUse());
                     int result = roomsRepository.updateRoom(roomEntity);
-                    List<Long> ids = new ArrayList<>();
-                    for (OrderEntity order : orders) {
-                        ids.add(order.getId());
-                    }
-                    ordersRepository.checkoutOrders(ids);
+                    orderEntity = new OrderEntity(roomEntity.getId());
+                    long orderId = ordersRepository.insertOrder(orderEntity);
+                    orderEntity.setId(orderId);
                     runOnUiThread(() -> {
-                        if (result > -1) {
+                        if (result > -1 && orderId > -1) {
                             binding.btnSubmit.setText(roomEntity.isUse() ? "Trả phòng" : "Đặt phòng");
                             binding.fabAddRoom.setVisibility(View.VISIBLE);
                         } else {

@@ -13,12 +13,16 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kmanager.R;
 import com.example.kmanager.databinding.ActivityMainBinding;
 import com.example.kmanager.db.entity.RoomEntity;
 import com.example.kmanager.db.repo.RoomsRepository;
 import com.example.kmanager.ui.adapter.RoomAdapter;
+import com.example.kmanager.ui.adapter.SpacesItemDecoration;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -47,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
         String username = prefs.getString("username", "");
         boolean isAdmin = "admin".equals(username);
         binding.fabAddRoom.setVisibility(isAdmin ? View.VISIBLE : View.GONE);
+        binding.imgLogout.setVisibility(isAdmin ? View.GONE : View.VISIBLE);
+        binding.imgMenu.setVisibility(isAdmin ? View.VISIBLE : View.GONE);
+        binding.drawerMain.setDrawerLockMode(isAdmin ? DrawerLayout.LOCK_MODE_UNLOCKED : DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         View navHeader = binding.navMain.getHeaderView(0);
         TextView tvUsername = navHeader.findViewById(R.id.tv_username);
         tvUsername.setText(username);
@@ -72,15 +79,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 case R.id.menu_logout:
-                    new AlertDialog.Builder(MainActivity.this)
-                            .setMessage("Bạn có chắc chắn muốn đăng xuất không?")
-                            .setPositiveButton("Có", (dialogInterface, i) -> {
-                                prefs.edit().putString("username", "").apply();
-                                Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
-                                startActivity(loginIntent);
-                            })
-                            .setNegativeButton("Không", null)
-                            .show();
+                    doLogout();
                     break;
             }
             return true;
@@ -116,19 +115,23 @@ public class MainActivity extends AppCompatActivity {
                     .setNegativeButton("Hủy", null)
                     .show();
         });
+
+        binding.imgLogout.setOnClickListener(view -> doLogout());
     }
 
     private void initRoomsView() {
         rooms = new ArrayList<>();
-//        for (int i = 0; i < 5; i++) {
-//            rooms.add(new RoomEntity("Room " + (i + 1)));
-//        }
         roomAdapter = new RoomAdapter(rooms);
         roomAdapter.setOnRoomClickListener(roomEntity -> {
             Intent roomIntent = new Intent(MainActivity.this, RoomActivity.class);
-            roomIntent.putExtra("room", (Serializable) roomEntity);
+            roomIntent.putExtra("room", roomEntity);
             startActivity(roomIntent);
         });
+        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.spacing);
+        GridLayoutManager gridLayoutManager = (GridLayoutManager) binding.rvRoom.getLayoutManager();
+        int spanCount = gridLayoutManager != null ? gridLayoutManager.getSpanCount() : 3;
+        SpacesItemDecoration spacesItemDecoration = new SpacesItemDecoration(spanCount, spacingInPixels, true);
+        binding.rvRoom.addItemDecoration(spacesItemDecoration);
         binding.rvRoom.setAdapter(roomAdapter);
     }
 
@@ -141,6 +144,18 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(() -> roomAdapter.notifyDataSetChanged());
             }
         }).start();
+    }
+
+    private void doLogout() {
+        new AlertDialog.Builder(MainActivity.this)
+                .setMessage("Bạn có chắc chắn muốn đăng xuất không?")
+                .setPositiveButton("Có", (dialogInterface, i) -> {
+                    prefs.edit().putString("username", "").apply();
+                    Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(loginIntent);
+                })
+                .setNegativeButton("Không", null)
+                .show();
     }
 
     @Override

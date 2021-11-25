@@ -61,8 +61,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if ("admin".equals(username) && "1".equals(password)) {
             editor.putString("username", username).apply();
-            Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(mainIntent);
+            goToMain();
             return;
         }
 
@@ -73,8 +72,7 @@ public class LoginActivity extends AppCompatActivity {
             } else {
                 runOnUiThread(() -> {
                     editor.putString("username", username).apply();
-                    Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(mainIntent);
+                    goToMain();
                 });
             }
         }).start();
@@ -95,6 +93,12 @@ public class LoginActivity extends AppCompatActivity {
     private void showErrorMsg(String msg) {
         binding.tvError.setVisibility(View.VISIBLE);
         binding.tvError.setText(msg);
+    }
+
+    private void goToMain() {
+        Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(mainIntent);
+        finish();
     }
 
 }

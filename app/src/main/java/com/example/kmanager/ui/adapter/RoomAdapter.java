@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kmanager.R;
@@ -54,7 +55,15 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomHolder> {
 
         void bind(RoomEntity roomEntity, OnRoomClickListener listener) {
             binding.tvRoomName.setText(roomEntity.getName());
-            binding.imgIcon.setImageResource(roomEntity.isUse() ? R.drawable.ic_room_close : R.drawable.ic_room_open);
+            binding.tvRoomStatus.setTextColor(roomEntity.isUse()
+                    ? ContextCompat.getColor(binding.getRoot().getContext(), R.color.red)
+                    : ContextCompat.getColor(binding.getRoot().getContext(), android.R.color.tertiary_text_light));
+            binding.tvRoomStatus.setText(roomEntity.isUse()
+                    ? "Đang sử dụng"
+                    : "Đang trống");
+            binding.imgIcon.setImageResource(roomEntity.isUse()
+                    ? R.drawable.ic_room_close
+                    : R.drawable.ic_room_open);
 
             binding.getRoot().setOnClickListener(view -> {
                 if (listener != null) {

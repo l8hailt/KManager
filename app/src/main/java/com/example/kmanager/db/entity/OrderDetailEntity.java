@@ -14,15 +14,15 @@ public class OrderDetailEntity {
     private String name;
 
     @ColumnInfo(name = "price")
-    private Double price;
+    private long price;
 
     @ColumnInfo(name = "orderId")
-    private int orderId;
+    private long orderId;
 
     @ColumnInfo(name = "orderTime")
     private long orderTime;
 
-    public OrderDetailEntity(String name, Double price, int orderId) {
+    public OrderDetailEntity(String name, long price, long orderId) {
         this.name = name;
         this.price = price;
         this.orderId = orderId;
@@ -45,19 +45,19 @@ public class OrderDetailEntity {
         this.name = name;
     }
 
-    public Double getPrice() {
+    public long getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(long price) {
         this.price = price;
     }
 
-    public int getOrderId() {
+    public long getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(int orderId) {
+    public void setOrderId(long orderId) {
         this.orderId = orderId;
     }
 

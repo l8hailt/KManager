@@ -18,11 +18,14 @@ public interface OrderDAO {
     @Query("SELECT * FROM orders ORDER BY id DESC")
     List<OrderEntity> getAllOrders();
 
-    @Query("SELECT * FROM orders WHERE datetime(orderTime/1000,'unixepoch','start of month') = datetime(:dateOfMonth/1000,'unixepoch','start of month')")
-    List<OrderEntity> getOrdersByMonth(Date dateOfMonth);
+    @Query("SELECT * FROM orders WHERE timeEnd BETWEEN :fromTime AND :toTime")
+    List<OrderEntity> getOrdersInTime(long fromTime, long toTime);
 
     @Query("SELECT * FROM orders WHERE roomId=:roomId AND checkout=0 ORDER BY id DESC")
     List<OrderEntity> getOrdersByRoomId(int roomId);
+
+    @Query("SELECT * FROM orders WHERE roomId=:roomId AND checkout=0 ORDER BY id DESC")
+    OrderEntity getOrderByRoomId(int roomId);
 
     @Insert
     long insert(OrderEntity order);
@@ -36,7 +39,5 @@ public interface OrderDAO {
     @Query("DELETE FROM orders")
     void deleteAll();
 
-    @Query("UPDATE orders SET checkout=1 WHERE id IN (:ids)")
-    void updateCheckoutOrders(List<Long> ids);
 
 }
