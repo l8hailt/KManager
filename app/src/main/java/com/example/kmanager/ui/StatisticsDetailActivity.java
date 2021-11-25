@@ -13,6 +13,7 @@ import com.example.kmanager.db.repo.OrdersRepository;
 import com.example.kmanager.ui.adapter.OrderDetailAdapter;
 
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -25,6 +26,7 @@ public class StatisticsDetailActivity extends AppCompatActivity {
 
     private OrderEntity orderEntity;
 
+    private SimpleDateFormat sdf;
     private NumberFormat nf;
 
     private long total;
@@ -39,6 +41,7 @@ public class StatisticsDetailActivity extends AppCompatActivity {
 
         ordersRepository = new OrdersRepository(getApplication());
 
+        sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
         nf = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
 
         initActions();
@@ -60,6 +63,8 @@ public class StatisticsDetailActivity extends AppCompatActivity {
                     runOnUiThread(() -> {
                         orderDetailAdapter.notifyDataSetChanged();
                         binding.tvTotal.setText(nf.format(total));
+                        binding.tvCheckInTime.setText("Check-in: " + sdf.format(orderEntity.getTimeStart()));
+                        binding.tvCheckOutTime.setText("Check-out: " + sdf.format(orderEntity.getTimeEnd()));
                     });
                 }).start();
             }

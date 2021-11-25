@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     tools:context=".ui.RoomActivity">
 
     <RelativeLayout
@@ -38,11 +39,39 @@
     </RelativeLayout>
 
     <View
+        android:id="@+id/v_toolbar"
         android:layout_width="match_parent"
         android:layout_height="4dp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/v_shadow"
         app:layout_constraintTop_toBottomOf="@id/rl_toolbar" />
+
+    <LinearLayout
+        android:id="@+id/ln_check_in_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@+id/v_toolbar">
+
+        <TextView
+            android:id="@+id/tv_check_in_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/black_logo_icon"
+            android:padding="8dp"
+            tools:text="Check-in: 25/11/2021 22:12" />
+
+        <View
+            android:id="@+id/v_time"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:background="@drawable/v_shadow"
+            app:layout_constraintTop_toBottomOf="@id/tv_check_in_time" />
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_order_details"
@@ -50,7 +79,7 @@
         android:layout_height="0dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@+id/v_divider"
-        app:layout_constraintTop_toBottomOf="@+id/rl_toolbar"
+        app:layout_constraintTop_toBottomOf="@+id/ln_check_in_time"
         tools:listitem="@layout/item_order_detail" />
 
     <View

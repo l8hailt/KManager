@@ -61,6 +61,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if ("admin".equals(username) && "1".equals(password)) {
             editor.putString("username", username).apply();
+            prefs.edit().putString("position", "Quản lý").apply();
             goToMain();
             return;
         }
@@ -72,6 +73,7 @@ public class LoginActivity extends AppCompatActivity {
             } else {
                 runOnUiThread(() -> {
                     editor.putString("username", username).apply();
+                    prefs.edit().putString("position", userLogin.getPosition()).apply();
                     goToMain();
                 });
             }

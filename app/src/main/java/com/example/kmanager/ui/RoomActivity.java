@@ -24,6 +24,7 @@ import com.example.kmanager.ui.adapter.OrderAdapter;
 import com.example.kmanager.ui.adapter.OrderDetailAdapter;
 
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -43,6 +44,7 @@ public class RoomActivity extends AppCompatActivity {
     private List<OrderDetailEntity> orderDetails;
     private OrderDetailAdapter orderDetailAdapter;
 
+    private SimpleDateFormat sdf;
     private NumberFormat nf;
 
     private long total = 0L;
@@ -58,6 +60,7 @@ public class RoomActivity extends AppCompatActivity {
 
         prefs = getSharedPreferences("k_prefs", MODE_PRIVATE);
 
+        sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
         nf = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
 
         initActions();
@@ -74,6 +77,10 @@ public class RoomActivity extends AppCompatActivity {
                     orderEntity = ordersRepository.getOrderByRoomId(roomEntity.getId());
                     if (orderEntity != null) {
                         Log.e("TAG", "onCreate: " + orderEntity.getId());
+                        if (roomEntity.isUse()) {
+                            binding.lnCheckInTime.setVisibility(View.VISIBLE);
+                            binding.tvCheckInTime.setText("Check-in: " + sdf.format(orderEntity.getTimeStart()));
+                        }
 
                         List<OrderDetailEntity> orderDetails = ordersRepository.getDetailsByOrderId(orderEntity.getId());
                         Log.e("TAG", "onCreate: " + orderDetails.size());
@@ -213,6 +220,8 @@ public class RoomActivity extends AppCompatActivity {
                         if (result > -1 && orderId > -1) {
                             binding.btnSubmit.setText(roomEntity.isUse() ? "Trả phòng" : "Đặt phòng");
                             binding.fabAddRoom.setVisibility(View.VISIBLE);
+                            binding.lnCheckInTime.setVisibility(View.VISIBLE);
+                            binding.tvCheckInTime.setText("Check-in: " + sdf.format(orderEntity.getTimeStart()));
                         } else {
                             Toast.makeText(RoomActivity.this, R.string.unknown_error, Toast.LENGTH_SHORT).show();
                         }

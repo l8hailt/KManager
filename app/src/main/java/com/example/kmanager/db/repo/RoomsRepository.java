@@ -34,4 +34,8 @@ public class RoomsRepository {
         return roomDAO.update(room);
     }
 
+    public int deleteRoom(RoomEntity room) {
+        return roomDAO.delete(room);
+    }
+
 }

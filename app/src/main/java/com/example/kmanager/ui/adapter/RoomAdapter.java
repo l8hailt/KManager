@@ -70,10 +70,19 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomHolder> {
                     listener.onClick(roomEntity);
                 }
             });
+
+            binding.getRoot().setOnLongClickListener(v -> {
+                if (listener != null) {
+                    listener.onLongClick(roomEntity, getAdapterPosition());
+                }
+                return true;
+            });
         }
     }
 
     public interface OnRoomClickListener {
         void onClick(RoomEntity roomEntity);
+
+        void onLongClick(RoomEntity roomEntity, int position);
     }
 }

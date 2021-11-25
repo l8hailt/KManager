@@ -26,7 +26,7 @@ public interface RoomDAO {
     int update(RoomEntity room);
 
     @Delete
-    void delete(RoomEntity room);
+    int delete(RoomEntity room);
 
     @Query("DELETE FROM rooms")
     void deleteAll();

@@ -18,9 +18,13 @@ public class UserEntity {
     @ColumnInfo(name = "password")
     private String password;
 
-    public UserEntity(@NonNull String username, @NonNull String password) {
+    @ColumnInfo(name = "position")
+    private String position;
+
+    public UserEntity(@NonNull String username, @NonNull String password, String position) {
         this.username = username;
         this.password = password;
+        this.position = position;
     }
 
     public String getUsername() {
@@ -39,4 +43,11 @@ public class UserEntity {
         this.password = password;
     }
 
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
 }

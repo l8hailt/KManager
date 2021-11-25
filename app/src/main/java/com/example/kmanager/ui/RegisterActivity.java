@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kmanager.R;
@@ -34,6 +35,17 @@ public class RegisterActivity extends AppCompatActivity {
     private void initActions() {
         binding.imgClose.setOnClickListener(view -> onBackPressed());
 
+        binding.edtPosition.setOnClickListener(v -> {
+            String[] options = {"Lễ tân", "Phục vụ", "Nhân viên order"};
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Chọn vị trí");
+            builder.setItems(options, (dialog, which) -> {
+                binding.edtPosition.setText(options[which]);
+            });
+            builder.show();
+        });
+
         binding.btnRegister.setOnClickListener(view -> doRegister());
     }
 
@@ -41,10 +53,11 @@ public class RegisterActivity extends AppCompatActivity {
         binding.tvError.setVisibility(View.INVISIBLE);
 
         String username = binding.edtUsername.getText().toString().trim();
+        String position = binding.edtPosition.getText().toString().trim();
         String password = binding.edtPassword.getText().toString().trim();
         String rePassword = binding.edtRePassword.getText().toString().trim();
 
-        if (!validateRegister(username, password, rePassword)) {
+        if (!validateRegister(username, position, password, rePassword)) {
             return;
         }
 
@@ -53,10 +66,11 @@ public class RegisterActivity extends AppCompatActivity {
             if (userCheck != null) {
                 runOnUiThread(() -> showErrorMsg("Tài khoản đã tồn tại"));
             } else {
-                UserEntity user = new UserEntity(username, password);
+                UserEntity user = new UserEntity(username, password, position);
                 long id = usersRepository.insertUser(user);
                 if (id > -1) {
                     prefs.edit().putString("username", username).apply();
+                    prefs.edit().putString("position", position).apply();
                     Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
                     startActivity(mainIntent);
                     finish();
@@ -67,8 +81,13 @@ public class RegisterActivity extends AppCompatActivity {
         }).start();
     }
 
-    private boolean validateRegister(String username, String password, String rePassword) {
+    private boolean validateRegister(String username, String position, String password, String rePassword) {
         if ("".equals(username)) {
+//            showErrorMsg("Tên đăng nhập không được để trống");
+            showErrorMsg("Vui lòng nhập đầy đủ thông tin");
+            return false;
+        }
+        if ("".equals(position)) {
 //            showErrorMsg("Tên đăng nhập không được để trống");
             showErrorMsg("Vui lòng nhập đầy đủ thông tin");
             return false;
